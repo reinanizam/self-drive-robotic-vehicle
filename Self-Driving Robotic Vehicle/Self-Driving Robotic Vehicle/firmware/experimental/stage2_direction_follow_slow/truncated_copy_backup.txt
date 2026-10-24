@@ -1,0 +1,96 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+// =====================================================
+// HARDWARE
+// =====================================================
+
+const int ENA = 5;
+const int IN1 = 4;
+const int IN2 = 7;
+
+const int IN3 = 8;
+const int IN4 = 9;
+const int ENB = 6;
+
+const int TRIG = A0;
+const int ECHO = A1;
+
+const int BRAKE_LED = 2;
+const int BUZZER = 3;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+// =====================================================
+// DISTANCE CONTROL
+// =====================================================
+
+const int DETECTION_LIMIT_CM = 30;
+const int RECHECK_DISTANCE_CM = 16;
+const int BRAKE_DISTANCE_CM = 10;
+const int FORWARD_RESTART_CM = 14;
+const int REVERSE_RELEASE_CM = 18;
+
+const int MOTION_THRESHOLD_CM = 2;
+const int URGENT_CLOSING_SPEED_CM_S = 25;
+
+// A single ultrasonic change is not enough to choose a direction.
+// The target must produce two consecutive motion windows while
+// the car is fully stopped. This rejects hand shake and echo jitter.
+const byte DIRECTION_CONFIRM_WINDOWS = 2;
+
+const unsigned long SENSOR_PERIOD_MS = 50;
+const unsigned long MOTION_WINDOW_MS = 180;
+
+// Reverse must run briefly before direction is checked again.
+const unsigned long MIN_REVERSE_RUN_MS = 500;
+
+// =====================================================
+// PWM CONTROL
+// =====================================================
+
+// A short strong kick starts all four wheels together. The lower
+// running PWM values below make the car calmer with the new batteries.
+const int FORWARD_START_PWM = 255;
+const int REVERSE_START_PWM = 220;
+
+const int CRUISE_PWM = 210;
+
+const int FOLLOW_INITIAL_PWM = 205;
+const int FORWARD_MIN_PWM = 195;
+const int FORWARD_MAX_PWM = 220;
+
+const int REVERSE_MIN_PWM = 170;
+const int REVERSE_MAX_PWM = 190;
+
+const unsigned long FORWARD_KICK_MS = 240;
+const unsigned long REVERSE_KICK_MS = 180;
+
+const unsigned long FORWARD_TO_REVERSE_WAIT_MS = 450;
+const unsigned long REVERSE_TO_FORWARD_WAIT_MS = 300;
+
+const unsigned long PWM_RAMP_PERIOD_MS = 20;
+
+const int RUN_RAMP_STEP = 3;
+const int STOP_RAMP_STEP = 20;
+
+// =====================================================
+// SENSOR STATE
+// =====================================================
+
+long sensorSamples[3] = {0, 0, 0};
+
+byte sensorSampleIndex = 0;
+byte sensorSampleCount = 0;
+byte noEchoCount = 0;
+
+long measuredDistance = 999;
+long filteredDistance = -1;
+long lastRawDistance = 999;
+
+unsigned long lastSensorReadingAt = 0;
+
+bool sensorReady = false;
+
+// =====================================================
+// TARGET TREND

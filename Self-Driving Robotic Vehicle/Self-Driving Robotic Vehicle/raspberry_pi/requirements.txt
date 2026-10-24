@@ -1,0 +1,8 @@
+# Raspberry Pi OS: install with apt (recommended)
+#   sudo apt install python3-picamera2 python3-opencv python3-numpy python3-serial python3-flask
+# or with pip (picamera2 needs libcamera from the OS and is best installed with apt):
+numpy
+opencv-python
+pyserial
+flask
+# picamera2   (apt: python3-picamera2)
