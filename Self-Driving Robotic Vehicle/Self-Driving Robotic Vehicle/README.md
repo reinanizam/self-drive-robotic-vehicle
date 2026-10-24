@@ -62,12 +62,11 @@ The simulator compiles the real `.ino` for the PC, feeds the real Pi program wit
 
 ## Known limits
 
-- This is a small student-built car for a taped indoor track. It is not a road vehicle and makes no road-safety claims.
-- The Uno sketch is close to the board's flash limit (V7.6c 31,682 B of 32,256, V7.6e 32,178 B). A new feature needs something removed first.
-- The camera cannot see the tape while the lead car is right in front of the lens. V7.6c then stops backing off; V7.6e keeps backing off on the gyro (simulator only so far).
-- Sonar echoes from an angled or soft toy car can drop out.
-- Open simulator failures (octagon): IR bar flickering in one phase, IR bar dead, camera 14 cm high, a car 30% slower than assumed.
+- This is a small student-built car for a taped indoor track.
+- The vision is tuned for one high-contrast marked track in indoor lighting. A different floor, lighting or camera tilt needs re-tuning, and strong glare can make the camera lose the track.
+- The vision is classical (OpenCV, no trained model). It follows a marked track and does not classify objects.
+- The Arduino Uno's flash memory is almost full (V7.6c uses 96.7%), so a new feature needs something removed first.
+- This is an educational project. It is not safety-certified and not meant for real vehicles.
 
-## License
 
-MIT, see [LICENSE](LICENSE).
+
