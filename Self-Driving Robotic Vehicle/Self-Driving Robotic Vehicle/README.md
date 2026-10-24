@@ -17,7 +17,7 @@ The repository holds everything: the car firmware, the Raspberry Pi vision progr
 
 The car does not know the track's side lengths. The only track knowledge in the code is the approximate layout (corners of about 45°, `TRACK_LEG_DEG`). It is a starting guess: every corner is corrected by the camera, the IR bar and the gyro, and after each corner the heading reference is re-taken from where the car really ended up.
 
-## Status (honest)
+## Status 
 
 | Version | Where | Status |
 |---|---|---|
