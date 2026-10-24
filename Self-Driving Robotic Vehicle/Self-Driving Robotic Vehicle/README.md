@@ -1,6 +1,6 @@
 # Mini Autonomous Vehicle Platform (MAVP)
 
-A small self-driving car built from an Arduino Uno and a Raspberry Pi 5. It follows a black-tape track, takes the corners on a gyro, and uses adaptive cruise control (ACC): it, and follows it again when it drives away.
+A small self-driving car built from an Arduino Uno and a Raspberry Pi 5. It follows a black-tape track, takes the corners on a gyro, and uses adaptive cruise control (ACC).
 
 The repository holds everything: the car firmware, the Raspberry Pi vision program, a closed-loop simulator that runs the real code on a PC, and the documentation. Version V7.6c is the firmware that ran on the real car.
 
@@ -8,14 +8,13 @@ The repository holds everything: the car firmware, the Raspberry Pi vision progr
 
 | Part | Job |
 |---|---|
-| **Raspberry Pi 5 + camera** | Finds the tape in the camera picture (a dark band with floor on both sides; pale marble veins are rejected by a contrast test), measures the offset, the corner distance and the corner angle, and sends them to the Uno ten times a second. Serves a live web dashboard (port 5001). It only suggests; it never drives the motors. |
+| **Raspberry Pi 5 + camera** | Finds the tape in the camera picture, measures the offset, the corner distance and the corner angle, and sends them to the Uno ten times a second. Serves a live web dashboard (port 5001). It only suggests; it never drives the motors. |
 | **Arduino Uno** | The only part that drives the motors. Steers on the Pi's suggestion, turns corners on the gyro, runs the cruise control from the sonar, and stops by itself when the Pi goes quiet for 0.4 s. |
 | **5-channel IR bar** | Support only: it steers when the camera does not see the tape, and never starts a corner by itself. |
-| **MPU6050 gyro** | Measures the corner turns and holds a straight line while backing off. |
+| **MPU6050 gyro** | Measures the corner turns. |
 | **HC-SR04 sonar** | Distance to the car ahead: stop, watch the gap, back off, follow. |
 | **16x2 LCD, LED, buzzer** | Show and sound what the car is doing: `!!  BRAKING  !!` with one beep, `<< REVERSING <<` with repeated beeps. |
 
-The car does not know the track's side lengths. The only track knowledge in the code is the approximate layout (corners of about 45°, `TRACK_LEG_DEG`). It is a starting guess: every corner is corrected by the camera, the IR bar and the gyro, and after each corner the heading reference is re-taken from where the car really ended up.
 
 ## Status 
 
